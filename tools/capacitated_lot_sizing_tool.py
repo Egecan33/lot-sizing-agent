@@ -14,7 +14,7 @@ Example CLI  ──────────────────────�
 
 ```bash
 echo '{"demand":[100,150,80,130],"capacity":[300,300,300,300],"setup_cost":1000,"unit_cost":50,"holding_cost":2}' | \
-  python tools/cap_lot_sizing_tool.py
+  python tools/capacitated_lot_sizing_tool.py
 ```
 
 Prerequisites: same as for *lot_sizing_tool.py* (Gurobi licence, gurobipy).
@@ -59,9 +59,9 @@ def _solve_cap_core(
         m.addConstr(prod[t] <= bigM * y[t], name=f"link_{t}")
 
     cost = (
-        setup_cost * gp.quicksum(y)
-        + unit_cost * gp.quicksum(prod)
-        + holding_cost * gp.quicksum(inv)
+        setup_cost * gp.quicksum(y.values())
+        + unit_cost * gp.quicksum(prod.values())
+        + holding_cost * gp.quicksum(inv.values())
     )
     m.setObjective(cost, GRB.MINIMIZE)
     m.optimize()

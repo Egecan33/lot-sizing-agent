@@ -59,9 +59,9 @@ def _solve_core(
         m.addConstr(prod[t] <= bigM * y[t], name=f"link_{t}")
 
     cost = (
-        setup_cost * gp.quicksum(y)
-        + unit_cost * gp.quicksum(prod)
-        + holding_cost * gp.quicksum(inv)
+        setup_cost * gp.quicksum(y.values())
+        + unit_cost * gp.quicksum(prod.values())
+        + holding_cost * gp.quicksum(inv.values())
     )
     m.setObjective(cost, GRB.MINIMIZE)
     m.optimize()
